@@ -86,19 +86,17 @@ class EmailAccount extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \|object
+     * @return array
      * @throws \yii\base\InvalidConfigException
      */
     public function getSmtpTransport()
     {
-        $mailer = Yii::$app->get(self::getModule()->mailer);
         $defaultConfig = [
-            'host' => $this->incoming_server,
+            'host' => $this->outgoing_server,
             'port' => $this->smtp_port,
             'encryption' => $this->smtp_encryption,
             'username' => $this->user,
             'password' => $this->password,
-            'validateCerts' => false,
 
         ];
 
@@ -111,6 +109,6 @@ class EmailAccount extends \yii\db\ActiveRecord
                 ]
             ];
         }
-        return Yii::createObject(array_merge_recursive(self::getModule()->transport, $defaultConfig));
+        return array_merge_recursive(self::getModule()->transport, $defaultConfig);
     }
 }

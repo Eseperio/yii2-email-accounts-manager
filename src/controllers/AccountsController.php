@@ -147,18 +147,63 @@ class AccountsController extends Controller
         ];
         $account = Yii::createObject(EmailAccount::class);
         $account->load(Yii::$app->request->post());
+        $mailer = Yii::$app->get($this->module->mailer);
 
         try {
-            $mailer = Yii::$app->get(self::getModule()->mailer);
-            $mailer->setTransport($account->getTransport());
+            $smtpTransport = $account->getSmtpTransport();
+            $mailer->setTransport($smtpTransport);
             $mailer->transport->start();
         } catch (\Throwable $e) {
-            $response['errors'][] = $e->getMessage();
+            $response['errors'][] = YII_DEBUG ? (string)$e : $e->getMessage();
             $response['success'] = false;
         }
 
         $mailer->transport->stop();
         return $this->asJson($response);
     }
+
+    /**
+     * @return \yii\web\Response
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionTestImap()
+    {
+        $response = [
+            'success' => true,
+            'errors' => []
+        ];
+        $account = Yii::createObject(EmailAccount::class);
+        $account->load(Yii::$app->request->post());
+
+        try {
+            $host = $account->incoming_server;
+            if (!empty($account->imap_port)) {
+                $host .= ":{$account->imap_port}";
+            }
+
+            if (!empty($account->imap_encryption)) {
+                $host .= "/" . $account->imap_encryption;
+            }
+
+            $qualifiedServer = "{" . $host . "}";
+            imap_timeout(IMAP_OPENTIMEOUT, 5);
+            $status = \imap_open($qualifiedServer, $account->user, $account->password, OP_HALFOPEN);
+            if ($status === false) {
+                $response['errors'] = \imap_errors();
+                Yii::debug([
+                    'IMAP_ERRORS',
+                    $response['errors']
+                ]);
+                $response['success'] = false;
+            }
+        } catch (\Throwable $e) {
+            $response['errors'] = [$e->getMessage()];
+            $response['success'] = false;
+        }
+
+
+        return $this->asJson($response);
+    }
+
 
 }

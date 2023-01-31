@@ -8,12 +8,15 @@ use yii\widgets\ActiveForm;
 /* @var $model eseperio\emailManager\models\EmailAccount */
 /* @var $form yii\widgets\ActiveForm */
 
-$showImapSettings = ArrayHelper::getValue($this->params, 'showImapSettings')
+\eseperio\emailManager\assets\EmailAccountFormAsset::register($this);
+$showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSettings')
 ?>
 
 <div class="email-account-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+            'id' => 'email-account-form'
+    ]); ?>
 
     <div class="row">
         <div class="col-md-6 col-lg-4">
@@ -103,8 +106,9 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'showImapSettings')
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="alert alert-info">
+            <div class="panel panel-body">
                 <?= Yii::t('email-manager', 'Before saving changes, it is highly recomended testing each protocol you are going to use') ?>
+                <hr>
                 <?= $this->render('partials/test', [
                     'showImap' => $showImapSettings,
                     'model' => $model,

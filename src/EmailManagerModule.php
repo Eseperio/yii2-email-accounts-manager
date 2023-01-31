@@ -15,7 +15,7 @@ class EmailManagerModule extends Module
     /**
      * @var bool Whether to show the IMAP settings in the email account form
      */
-    public $showImapSettings = false;
+    public $showImapSettings = true;
 
     /**
      * @var array The configuration of the transport that will be used to send emails
@@ -23,7 +23,8 @@ class EmailManagerModule extends Module
      * the email account parameters will be overwritten by the ones stored in the database
      */
     public $transport = [
-        'class' => 'Swift_SmtpTransport'
+        'class' => 'Swift_SmtpTransport',
+        'timeout' => 5 // Timeout has been reduced. A good server should respond in less than 1 second
     ];
 
     public function init()

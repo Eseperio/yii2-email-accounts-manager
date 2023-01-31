@@ -22,6 +22,7 @@ return [
     ],
 ];
 ```
+
 Add the module to your app modules configuration
 
 ```php
@@ -36,8 +37,11 @@ return [
 ```
 
 ## Usage
+
     Important: This module will replace the current transport for the mailer defined and it does not restore to previous value. 
     If you want to prevent this use a different mailer component for this module.
 
+This module includes methods for checking whether the email account is valid and for sending emails using the given
+configuration.
 
-### Configuration
+
