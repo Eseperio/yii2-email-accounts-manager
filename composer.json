@@ -1,0 +1,21 @@
+{
+    "name": "eseperio/yii2-email-accounts-manager",
+    "description": "Use and manage multiple email accounts in a single yii2-project",
+    "type": "yii2-extension",
+    "require": {
+        "yiisoft/yii2": "^2.0.14"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "eseperio\\emailManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "E.Alamo",
+            "email": "erosdelalamo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
