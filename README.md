@@ -16,7 +16,7 @@ return [
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'migrationPath' => [
-                'eseperio\emailmanager\migrations',
+                '@vendor/eseperio/yii2-email-accounts-manager/src/migrations',
             ],
         ],
     ],
@@ -28,10 +28,13 @@ Add the module to your app modules configuration
 ```php
 return [
     'modules' => [
-        'email-manager' => \eseperio\emailManager\EmailManagerModule::class,
+        'email-manager' =>[
+        'class'=> \eseperio\emailManager\EmailManagerModule::class,      
         'showImapSettings' => false, // change if you need imap settings to be shown,
         // 'mailer'=> 'mailer',
         // 'transport => ['class' => 'Swift_SmtpTransport'],
+        ],
+       
     ]
 ]
 ```
