@@ -6,7 +6,7 @@ Use and manage different email accounts under the same project.
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-`composer reqruire eseperio/yii2-email-accounts-manager`
+`composer require eseperio/yii2-email-accounts-manager`
 
 Add the migration path to your console config:
 
