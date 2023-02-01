@@ -19,7 +19,6 @@ class m230131_101948_add_email_accounts_table extends Migration
             'address' => $this->string(255)->notNull(),
             'user' => $this->string(255)->notNull(),
             'password' => $this->string(255)->notNull(),
-            'host' => $this->string(255)->notNull(),
             'outgoing_server' => $this->string(255)->notNull()->comment('Outgoing server'),
             'incoming_server' => $this->string(255)->notNull()->comment('Incoming server'),
             'imap_port' => $this->integer()->notNull()->defaultValue(993)->comment('IMAP port'),

@@ -132,7 +132,7 @@ class AccountsController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('email-manager', 'The requested page does not exist.'));
     }
 
     /**
@@ -168,13 +168,10 @@ class AccountsController extends Controller
      */
     public function actionTestImap()
     {
-        $response = [
-            'success' => true,
-            'errors' => []
+        $response = ['success' => true, 'errors' => []
         ];
         $account = Yii::createObject(EmailAccount::class);
         $account->load(Yii::$app->request->post());
-
         try {
             $host = $account->incoming_server;
             if (!empty($account->imap_port)) {
@@ -184,23 +181,29 @@ class AccountsController extends Controller
             if (!empty($account->imap_encryption)) {
                 $host .= "/" . $account->imap_encryption;
             }
-
             $qualifiedServer = "{" . $host . "}";
             imap_timeout(IMAP_OPENTIMEOUT, 5);
-            $status = \imap_open($qualifiedServer, $account->user, $account->password, OP_HALFOPEN);
-            if ($status === false) {
+            $stream = \imap_open($qualifiedServer, $account->user, $account->password, OP_HALFOPEN);
+            if ($stream === false) {
                 $response['errors'] = \imap_errors();
-                Yii::debug([
-                    'IMAP_ERRORS',
-                    $response['errors']
-                ]);
                 $response['success'] = false;
+                Yii::debug(['IMAP_ERRORS', $response['errors']]);
             }
         } catch (\Throwable $e) {
             $response['errors'] = [$e->getMessage()];
             $response['success'] = false;
         }
+        if ($stream !== false) {
 
+//        If no error, configuration is ok. Retrieve mailboxes
+            $mailboxes = \imap_getmailboxes($stream, $qualifiedServer, "*");
+            $parsedMbNames = [];
+            foreach ($mailboxes as $mailbox) {
+                $parsedMbNames[] = str_replace($qualifiedServer, '', $mailbox->name);
+            }
+            $response['mailboxes'] = $parsedMbNames;
+
+        }
 
         return $this->asJson($response);
     }

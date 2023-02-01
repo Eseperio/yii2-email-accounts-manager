@@ -12,7 +12,6 @@ use Yii;
  * @property string $address
  * @property string $user
  * @property string $password
- * @property string $host
  * @property string $outgoing_server Outgoing server
  * @property string $incoming_server Incoming server
  * @property int $imap_port IMAP port
@@ -44,9 +43,9 @@ class EmailAccount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['address', 'user', 'password', 'host', 'outgoing_server', 'incoming_server'], 'required'],
+            [['address', 'user', 'password', 'outgoing_server', 'incoming_server'], 'required'],
             [['imap_port', 'smtp_port', 'smtp_validate_cert', 'imap_validate_cert'], 'integer'],
-            [['address', 'user', 'password', 'host', 'outgoing_server', 'incoming_server', 'smtp_encryption', 'imap_encryption', 'sent_folder', 'inbox_folder', 'draft_folder', 'trash_folder'], 'string', 'max' => 255],
+            [['address', 'user', 'password', 'outgoing_server', 'incoming_server', 'smtp_encryption', 'imap_encryption', 'sent_folder', 'inbox_folder', 'draft_folder', 'trash_folder'], 'string', 'max' => 255],
         ];
     }
 
@@ -60,7 +59,6 @@ class EmailAccount extends \yii\db\ActiveRecord
             'address' => Yii::t('email-manager', 'Address'),
             'user' => Yii::t('email-manager', 'User'),
             'password' => Yii::t('email-manager', 'Password'),
-            'host' => Yii::t('email-manager', 'Host'),
             'outgoing_server' => Yii::t('email-manager', 'Outgoing server'),
             'incoming_server' => Yii::t('email-manager', 'Incoming server'),
             'imap_port' => Yii::t('email-manager', 'IMAP port'),
@@ -111,4 +109,31 @@ class EmailAccount extends \yii\db\ActiveRecord
         }
         return array_merge_recursive(self::getModule()->transport, $defaultConfig);
     }
+
+    /**
+     * @return object|null
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function setAsMainTransport()
+    {
+        $mailer = Yii::$app->get(self::getModule()->mailer);
+        $mailer->setTransport($this->getSmtpTransport());
+        return $mailer;
+    }
+
+
+    /**
+     * Shortcut to compose an email directly from this account
+     * @param null $view
+     * @param array $params
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function compose($view = null, $params = [])
+    {
+        /* @var $mailer \yii\mail\MailerInterface */
+        $mailer = $this->setAsMainTransport();
+        return $mailer->compose($view, $params)->setFrom($this->address)->setReplyTo($this->address);
+    }
+
 }

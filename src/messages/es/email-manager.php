@@ -43,4 +43,18 @@ return [
     'Test SMTP' => 'Probar SMTP',
     'Trash folder' => 'Carpeta de papelera',
     'User' => 'Usuario',
+    'Are you sure you want to delete this item?' => '¿Está seguro de que desea eliminar este elemento?',
+    'Configuration seems ok' => 'La configuración parece correcta',
+    'Create Email Account' => 'Crear cuenta de correo',
+    'Delete' => 'Eliminar',
+    'Email Accounts' => 'Cuentas de correo',
+    'Folders configuration has been set to automatically detected within the account, but changes has not been stored.' => 'La configuración de las carpetas se ha establecido para detectarlas automáticamente dentro de la cuenta, pero los cambios no se han guardado.',
+    'IMAP configuration seems ok' => 'La configuración IMAP parece correcta',
+    'Important' => 'Importante',
+    'Reset' => 'Reiniciar',
+    'Search' => 'Buscar',
+    'The requested page does not exist.' => 'La página solicitada no existe.',
+    'Update' => 'Actualizar',
+    'Update Email Account: {name}' => 'Actualizar cuenta de correo: {name}',
+    'Wrong configuration' => 'Configuración incorrecta'
 ];

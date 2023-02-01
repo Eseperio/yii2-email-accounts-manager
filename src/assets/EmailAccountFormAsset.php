@@ -22,8 +22,10 @@ class EmailAccountFormAsset extends AssetBundle
 
         $settings = Json::encode([
             'emailFormSelector' => '#email-account-form',
-            'imapSentFolderInputId' => Html::getInputId(($model), 'imap_sent_folder'),
-            'imapInboxFolderInputId' => Html::getInputId($model, 'imap_inbox_folder'),
+            'imapSentFolderInputId' => Html::getInputId(($model), 'sent_folder'),
+            'imapInboxFolderInputId' => Html::getInputId($model, 'inbox_folder'),
+            'imapTrashFolderInputId' => Html::getInputId($model, 'trash_folder'),
+            'imapDraftsFolderInputId' => Html::getInputId($model, 'draft_folder'),
             'urls' => [
                 'imap' => \yii\helpers\Url::to(['accounts/test-imap']),
                 'smtp' => \yii\helpers\Url::to(['accounts/test-smtp']),

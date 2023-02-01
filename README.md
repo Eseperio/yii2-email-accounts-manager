@@ -44,4 +44,20 @@ return [
 This module includes methods for checking whether the email account is valid and for sending emails using the given
 configuration.
 
+The EmailAccount model includes useful methods, like `getTransport()` and `setAsMainTransport()`.
+
+`getTransport()` returns the transport configuration based on configuration defined within module and the account itself.
+
+
+`setAsMainTransport()` will set the transport configuration for the mailer component defined in the module configuration and will return the mailer instance.
+`compose($view='',$params=[])` will return a new message instance preconfigured with the transport configuration for the account and also `setFrom` defined with the account address.
+
+### Sending an email from a custom account
+
+```php
+use eseperio\emailmanager\models\EmailAccount;
+
+$account = EmailAccount::findOne(1)->compose('test', ['message' => 'Hello world!'])->setTo('someaddress@example.com')->send();
+```
+
 

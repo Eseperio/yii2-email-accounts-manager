@@ -44,14 +44,29 @@ let emailConfig = {
         if (!data.mailboxes || data.mailboxes.length <= 0) {
             console.error('[EmailConfig] Unable to retrieve mailboxes ');
         } else {
-            let sentFolder = $('#' + this.settings.imapSentFolderInputId).html('');
-            let inboxFolder = $('#' + this.settings.imapInboxFolderInputId).html('');
+            let sentFolder = $('#' + this.settings.imapSentFolderInputId);
+            let inboxFolder = $('#' + this.settings.imapInboxFolderInputId);
+            let draftFolder = $('#' + this.settings.imapDraftsFolderInputId);
+            let trashFolder = $('#' + this.settings.imapTrashFolderInputId);
+            console.log(this.settings.imapSentFolderInputId, this.settings.imapInboxFolderInputId, this.settings.imapDraftFolderInputId, this.settings.imapTrashFolderInputId);
             for (let i = 0; i < data.mailboxes.length; i++) {
-                console.log('looping', data.mailboxes[i], data.mailboxes[i].toLowerCase(), data.mailboxes[i].toLowerCase().indexOf('sent') >= 0)
-                let selectedSentFolder = data.mailboxes[i].toLowerCase().indexOf('sent') >= 0
-                let selectedInboxFolder = data.mailboxes[i].toLowerCase().indexOf('INBOX') >= 0
-                sentFolder.append(new Option(data.mailboxes[i], data.mailboxes[i], selectedSentFolder, selectedSentFolder))
-                inboxFolder.append(new Option(data.mailboxes[i], data.mailboxes[i], selectedInboxFolder, selectedInboxFolder))
+
+                if(data.mailboxes[i].toLowerCase() === 'inbox'){
+                    inboxFolder.val(data.mailboxes[i]);
+                }
+                if(data.mailboxes[i].toLowerCase().indexOf('sent') >= 0){
+                    sentFolder.val(data.mailboxes[i]);
+                }
+
+                if(data.mailboxes[i].toLowerCase().indexOf('drafts') >= 0){
+                    draftFolder.val(data.mailboxes[i]);
+                }
+                if(data.mailboxes[i].toLowerCase().indexOf('trash') >= 0){
+                    trashFolder.val(data.mailboxes[i]);
+                }
+
+
+
             }
             $('.mailboxes-updated').show();
 
@@ -59,7 +74,7 @@ let emailConfig = {
     },
     testService(sender, service) {
         let form = $(this.settings.emailFormSelector);
-        console.log(form,this.settings.emailFormSelector)
+        console.log(form, this.settings.emailFormSelector)
 
         $.ajax({
             url: this.settings.urls[service],

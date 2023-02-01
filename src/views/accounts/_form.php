@@ -18,6 +18,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
             'id' => 'email-account-form'
     ]); ?>
 
+    <?= $form->errorSummary($model) ?>
     <div class="row">
         <div class="col-md-6 col-lg-4">
 
@@ -95,7 +96,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
                 </div>
                 <div class="panel-body">
 
-                    <?= $form->field($model, 'sent_folder')->dropDownList(['maxlength' => 255]) ?>
+                    <?= $form->field($model, 'sent_folder')->textInput(['maxlength' => 255]) ?>
                     <?= $form->field($model, 'inbox_folder')->textInput(['maxlength' => 255]) ?>
                     <?= $form->field($model, 'draft_folder')->textInput(['maxlength' => 255]) ?>
                     <?= $form->field($model, 'trash_folder')->textInput(['maxlength' => 255]) ?>
