@@ -29,10 +29,10 @@ Add the module to your app modules configuration
 return [
     'modules' => [
         'email-manager' =>[
-        'class'=> \eseperio\emailManager\EmailManagerModule::class,      
-        'showImapSettings' => false, // change if you need imap settings to be shown,
-        // 'mailer'=> 'mailer',
-        // 'transport => ['class' => 'Swift_SmtpTransport'],
+            'class'=> \eseperio\emailManager\EmailManagerModule::class,      
+            'showImapSettings' => false, // change if you need imap settings to be shown,
+            // 'mailer'=> 'mailer',
+            // 'transport => ['class' => 'Swift_SmtpTransport'],
         ],
        
     ]

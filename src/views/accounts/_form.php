@@ -1,6 +1,6 @@
 <?php
 
-use eseperio\proshop\common\helpers\ArrayHelper;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 

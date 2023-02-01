@@ -3,11 +3,10 @@
 namespace eseperio\emailManager\traits;
 
 
-use eseperio\proshop\common\core\CoreModule;
 use Yii;
 
 /**
- * @property-read CoreModule $module
+ * @property-read \yii\base\Module $module
  */
 trait ModuleAwareTrait
 {
