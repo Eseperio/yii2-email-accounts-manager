@@ -20,7 +20,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
 
     <?= $form->errorSummary($model) ?>
     <div class="row">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -37,7 +37,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
 
 
         </div>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -66,7 +66,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
     </div>
     <?php
     if ($showImapSettings): ?>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 ">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><?= Yii::t('email-manager', 'IMAP configuration') ?></h3>
@@ -88,7 +88,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 ">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
