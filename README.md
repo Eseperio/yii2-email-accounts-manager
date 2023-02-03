@@ -1,6 +1,7 @@
 # yii2-email-accounts-manager
 
 Use and manage different email accounts under the same project.
+Features methods to live test the configuration and ensure it is correct.
 
 ## Installation
 
