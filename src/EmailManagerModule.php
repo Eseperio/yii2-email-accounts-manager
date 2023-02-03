@@ -6,7 +6,7 @@ use yii\base\Module;
 
 class EmailManagerModule extends Module
 {
-    public $defaultRoute = 'accounts/index';
+    public $defaultRoute = 'account/index';
 
     /**
      * @var string The name of the component that will be used to send emails

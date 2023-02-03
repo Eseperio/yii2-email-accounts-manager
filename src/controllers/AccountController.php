@@ -14,7 +14,7 @@ use yii\web\NotFoundHttpException;
 /**
  * RemoveController implements the CRUD actions for EmailAccount model.
  */
-class AccountsController extends Controller
+class AccountController extends Controller
 {
     use ModuleAwareTrait;
 
