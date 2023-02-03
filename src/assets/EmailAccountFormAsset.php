@@ -27,8 +27,8 @@ class EmailAccountFormAsset extends AssetBundle
             'imapTrashFolderInputId' => Html::getInputId($model, 'trash_folder'),
             'imapDraftsFolderInputId' => Html::getInputId($model, 'draft_folder'),
             'urls' => [
-                'imap' => \yii\helpers\Url::to(['accounts/test-imap']),
-                'smtp' => \yii\helpers\Url::to(['accounts/test-smtp']),
+                'imap' => \yii\helpers\Url::to(['account/test-imap']),
+                'smtp' => \yii\helpers\Url::to(['account/test-smtp']),
             ]
         ]);
         $view->registerJs(<<<JS
