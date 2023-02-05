@@ -29,6 +29,17 @@ class EmailAccount extends \yii\db\ActiveRecord
 {
     use ModuleAwareTrait;
 
+    public function init()
+    {
+        if (empty($this->smtp_validate_cert)) {
+            $this->smtp_validate_cert = 1;
+        }
+        if (empty($this->imap_validate_cert)) {
+            $this->imap_validate_cert = 1;
+        }
+        parent::init();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,8 +53,13 @@ class EmailAccount extends \yii\db\ActiveRecord
      */
     public function rules()
     {
+
         return [
-            [['address', 'user', 'password', 'outgoing_server', 'incoming_server'], 'required'],
+            [['address', 'user', 'password', 'outgoing_server'], 'required'],
+            ['incoming_server', 'required', 'enableClientValidation' => false, 'when' => function ($model) {
+                return self::getModule()->showImapSettings;
+            }],
+            ['incoming_server', 'default', 'value' => 'outgoing_server'],
             [['imap_port', 'smtp_port', 'smtp_validate_cert', 'imap_validate_cert'], 'integer'],
             [['address', 'user', 'password', 'outgoing_server', 'incoming_server', 'smtp_encryption', 'imap_encryption', 'sent_folder', 'inbox_folder', 'draft_folder', 'trash_folder'], 'string', 'max' => 255],
         ];

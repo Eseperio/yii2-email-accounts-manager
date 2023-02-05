@@ -135,6 +135,53 @@ class AccountController extends Controller
         throw new NotFoundHttpException(Yii::t('email-manager', 'The requested page does not exist.'));
     }
 
+    public function actionAutodiscover()
+    {
+        $response = [
+            'success' => true,
+            'errors' => []
+        ];
+        $address = Yii::$app->request->post('address');
+        $address = filter_var($address, FILTER_VALIDATE_EMAIL);
+        if ($address === false) {
+            $response['success'] = false;
+            $response['errors'][] = Yii::t('email-manager', 'Invalid email address');
+        } else {
+            $address = filter_var($address, FILTER_SANITIZE_EMAIL);
+            $domain = explode('@', $address)[1];
+            $context = stream_context_create([
+                "ssl" => [
+                    'timeout' => 5,
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                ]
+            ]);
+            try {
+                $data = file_get_contents("https://" . $domain . "/mail/config-v1.1.xml?emailaddress=" . $address, false, $context);
+
+                $xml = simplexml_load_string($data);
+                $outgoingServer = $xml->emailProvider->outgoingServer[0];
+                $incomingServer = $xml->emailProvider->incomingServer[0];
+                $response['params'] = [
+                    'outgoingServer' => (string)$outgoingServer->hostname,
+                    'username' => (string)$outgoingServer->username,
+                    'smtpPort' => (string)$outgoingServer->port,
+                    'smtpEncryption' => (string)$outgoingServer->socketType,
+                    'incomingServer' => (string)$incomingServer->hostname,
+                    'imapPort' => (string)$incomingServer->port,
+                    'imapEncryption' => (string)$incomingServer->socketType,
+
+                ];
+
+            } catch (\Throwable $e) {
+                $response['success'] = false;
+                $publicMessage = Yii::t('email-manager', 'Unable to connect to the server.');
+                $response['errors'][] = YII_DEBUG ? (string)$e : $publicMessage;
+            }
+        }
+        return $this->asJson($response);
+    }
+
     /**
      * @return \yii\web\Response
      * @throws \yii\base\InvalidConfigException

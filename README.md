@@ -3,11 +3,21 @@
 Use and manage different email accounts under the same project.
 Features methods to live test the configuration and ensure it is correct.
 
+### Features
+
+- Manage multiple email accounts
+- SMTP + IMAP configuration
+- SMTP + IMAP live test
+- Autodiscover SMTP and IMAP settings (when available)
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 `composer require eseperio/yii2-email-accounts-manager`
+
+`ext-simplexml` is required for autodiscover feature, but has not been required within composer.json so you can use the
+library without autodiscover
 
 Add the migration path to your console config:
 
@@ -50,11 +60,13 @@ configuration.
 
 The EmailAccount model includes useful methods, like `getTransport()` and `setAsMainTransport()`.
 
-`getTransport()` returns the transport configuration based on configuration defined within module and the account itself.
+`getTransport()` returns the transport configuration based on configuration defined within module and the account
+itself.
 
-
-`setAsMainTransport()` will set the transport configuration for the mailer component defined in the module configuration and will return the mailer instance.
-`compose($view='',$params=[])` will return a new message instance preconfigured with the transport configuration for the account and also `setFrom` defined with the account address.
+`setAsMainTransport()` will set the transport configuration for the mailer component defined in the module configuration
+and will return the mailer instance.
+`compose($view='',$params=[])` will return a new message instance preconfigured with the transport configuration for the
+account and also `setFrom` defined with the account address.
 
 ### Sending an email from a custom account
 

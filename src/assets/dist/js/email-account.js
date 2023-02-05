@@ -2,10 +2,26 @@ let emailConfig = {
     settings: {
         emailFormSelector: null,
         imapSentFolderInputId: null,
+        imapInboxFolderInputId: "",
+        imapDraftsFolderInputId: "",
+        imapTrashFolderInputId: "",
+
+        addressInputId: "",
+        userInputId: "",
+        passwordInputId: "",
+        outgoingServerInputId: "",
+        incomingServerInputId: "",
+        smtpPortInputId: "",
+        smtpEncryptionInputId: "",
+        imapHostInputId: "",
+        imapPortInputId: "",
+        imapEncryptionInputId: "",
         urls: {
             imap: null,
-            smtp: null
-        }
+            smtp: null,
+            autodiscover: null
+        },
+
     },
 
     init: function (settings) {
@@ -24,6 +40,10 @@ let emailConfig = {
             .off('click', '.test-smtp')
             .on('click', '.test-smtp', (e) => {
                 this.testService(e.currentTarget, 'smtp');
+            }).off('click', '.autoconfig')
+            .on('click', '.autoconfig', (e) => {
+                e.preventDefault();
+                this.autoconfig();
             })
     },
     toggleSenderStatus: function (sender, loading) {
@@ -39,6 +59,57 @@ let emailConfig = {
 
         }
     },
+    autoconfig: function () {
+        //     Request autodiscover to get the email settings using the domain in the given address
+        let addressInput = $("#" + this.settings.addressInputId);
+        let domain = addressInput.val().split('@')[1];
+        let autodiscoverErrors = $('.autodiscover-errors');
+        let autoconfigButton = $('.autoconfig');
+        autoconfigButton.attr('disabled', 'disabled');
+
+        $.ajax({
+            url: this.settings.urls.autodiscover,
+            method: 'POST',
+            data: {
+                address: addressInput.val(),
+            },
+            timeout: 5000,
+            beforeSend: () => {
+                autodiscoverErrors.hide();
+                return true;
+            }
+        }).done((data) => {
+            if (!data.success) {
+                autodiscoverErrors.show();
+                console.log(data.errors);
+                autodiscoverErrors.html(data.errors.join('<br>'));
+            }else{
+                let userInput = $("#" + this.settings.userInputId);
+                let incomingServerInput = $("#" + this.settings.incomingServerInputId);
+                let outgoingServerInput = $("#" + this.settings.outgoingServerInputId);
+                let smtpPortInput = $("#" + this.settings.smtpPortInputId);
+                let smtpEncryptionInput = $("#" + this.settings.smtpEncryptionInputId);
+                let imapHostInput = $("#" + this.settings.imapHostInputId);
+                let imapPortInput = $("#" + this.settings.imapPortInputId);
+                let imapEncryptionInput = $("#" + this.settings.imapEncryptionInputId);
+
+                let params = data.params;
+                userInput.val(params.username);
+                incomingServerInput.val(params.incomingServer);
+                outgoingServerInput.val(params.outgoingServer);
+                smtpPortInput.val(params.smtpPort);
+                smtpEncryptionInput.val(params.smtpEncryption);
+                imapHostInput.val(params.imapHost);
+                imapPortInput.val(params.imapPort);
+                imapEncryptionInput.val(params.imapEncryption);
+            }
+            autoconfigButton.removeAttr('disabled');
+        }).fail((data) => {
+            alert('Error while trying to get the email settings.');
+            autoconfigButton.removeAttr('disabled');
+
+        });
+    },
     imapCallback: function (data) {
         $('.imap-success').show();
         if (!data.mailboxes || data.mailboxes.length <= 0) {
@@ -48,23 +119,21 @@ let emailConfig = {
             let inboxFolder = $('#' + this.settings.imapInboxFolderInputId);
             let draftFolder = $('#' + this.settings.imapDraftsFolderInputId);
             let trashFolder = $('#' + this.settings.imapTrashFolderInputId);
-            console.log(this.settings.imapSentFolderInputId, this.settings.imapInboxFolderInputId, this.settings.imapDraftFolderInputId, this.settings.imapTrashFolderInputId);
             for (let i = 0; i < data.mailboxes.length; i++) {
 
-                if(data.mailboxes[i].toLowerCase() === 'inbox'){
+                if (data.mailboxes[i].toLowerCase() === 'inbox') {
                     inboxFolder.val(data.mailboxes[i]);
                 }
-                if(data.mailboxes[i].toLowerCase().indexOf('sent') >= 0){
+                if (data.mailboxes[i].toLowerCase().indexOf('sent') >= 0) {
                     sentFolder.val(data.mailboxes[i]);
                 }
 
-                if(data.mailboxes[i].toLowerCase().indexOf('drafts') >= 0){
+                if (data.mailboxes[i].toLowerCase().indexOf('drafts') >= 0) {
                     draftFolder.val(data.mailboxes[i]);
                 }
-                if(data.mailboxes[i].toLowerCase().indexOf('trash') >= 0){
+                if (data.mailboxes[i].toLowerCase().indexOf('trash') >= 0) {
                     trashFolder.val(data.mailboxes[i]);
                 }
-
 
 
             }

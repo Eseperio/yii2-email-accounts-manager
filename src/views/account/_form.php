@@ -15,7 +15,7 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
 <div class="email-account-form">
 
     <?php $form = ActiveForm::begin([
-            'id' => 'email-account-form'
+        'id' => 'email-account-form'
     ]); ?>
 
     <?= $form->errorSummary($model) ?>
@@ -29,6 +29,10 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
                 <div class="panel-body">
                     <?= $form->field($model, 'address')->textInput(['maxlength' => 255]) ?>
 
+                    <div>
+                     <?= $this->render('partials/autodiscover') ?>
+                        <hr>
+                    </div>
                     <?= $form->field($model, 'user')->textInput(['maxlength' => 255]) ?>
 
                     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255]) ?>
@@ -50,8 +54,8 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
                     <?= $form->field($model, 'smtp_port')->textInput() ?>
 
                     <?= $form->field($model, 'smtp_encryption')->dropDownList([
-                        'ssl' => 'ssl',
-                        'tls' => 'tls',
+                        'SSL' => 'SSL',
+                        'TLS' => 'TLS',
                         null => Yii::t('email-manager', 'None')
                     ]) ?>
 
@@ -77,8 +81,8 @@ $showImapSettings = ArrayHelper::getValue($this->params, 'module.showImapSetting
                     <?= $form->field($model, 'imap_port')->textInput() ?>
 
                     <?= $form->field($model, 'imap_encryption')->dropDownList([
-                        'ssl' => 'ssl',
-                        'tls' => 'tls',
+                        'SSL' => 'SSL',
+                        'TLS' => 'TLS',
                         null => Yii::t('email-manager', 'None')
                     ]) ?>
 
