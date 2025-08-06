@@ -53,15 +53,18 @@ class EmailAccount extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-
         return [
+            [['address', 'user', 'outgoing_server', 'incoming_server'], 'filter', 'filter' => 'trim'],
+            ['address', 'email'],
             [['address', 'user', 'password', 'outgoing_server'], 'required'],
             ['incoming_server', 'required', 'enableClientValidation' => false, 'when' => function ($model) {
                 return self::getModule()->showImapSettings;
             }],
             ['incoming_server', 'default', 'value' => 'outgoing_server'],
-            [['imap_port', 'smtp_port', 'smtp_validate_cert', 'imap_validate_cert'], 'integer'],
+            [['imap_port', 'smtp_port'], 'integer', 'min' => 1, 'max' => 65535],
+            [['smtp_validate_cert', 'imap_validate_cert'], 'integer'],
             [['address', 'user', 'password', 'outgoing_server', 'incoming_server', 'smtp_encryption', 'imap_encryption', 'sent_folder', 'inbox_folder', 'draft_folder', 'trash_folder'], 'string', 'max' => 255],
+            [['user', 'outgoing_server', 'incoming_server'], 'match', 'pattern' => '/^\S+$/', 'message' => 'No puede contener espacios.'],
         ];
     }
 
