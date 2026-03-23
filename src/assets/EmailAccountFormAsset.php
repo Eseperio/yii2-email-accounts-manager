@@ -2,7 +2,7 @@
 
 namespace eseperio\emailManager\assets;
 
-use eseperio\admintheme\helpers\Html;
+use yii\helpers\Html;
 use eseperio\emailManager\models\EmailAccount;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
